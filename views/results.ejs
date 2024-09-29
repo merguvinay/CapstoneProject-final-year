@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Results</title>
+</head>
+<body>
+  <h1>Search Results</h1>
+  <% if (tweets.length === 0) { %>
+    <p>No tweets found.</p>
+  <% } else { %>
+    <% tweets.forEach(tweet => { %>
+      <div class="tweet">
+        <h3>@<%= tweet.username %></h3>
+        <p><%= tweet.content %></p>
+        <p>Location: <%= tweet.location %> | Likes: <%= tweet.likes %> | Retweets: <%= tweet.retweetCount %></p>
+        <p>Sentiment: <%= tweet.sentiment === 'positive' ? '😊' : '😞' %></p>
+        <hr>
+      </div>
+    <% }); %>
+  <% } %>
+  <a href="/tweets">Back to Search</a>
+</body>
+</html>

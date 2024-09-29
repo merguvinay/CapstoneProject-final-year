@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitter Analysis</title>
+</head>
+<body>
+  <h1>Twitter Search Form</h1>
+  <form action="/tweets/search" method="POST">
+    <label for="search">Search Term:</label>
+    <input type="text" id="search" name="search"><br>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location"><br>
+
+    <label for="minLikes">Minimum Likes:</label>
+    <input type="number" id="minLikes" name="minLikes"><br>
+
+    <label for="minRetweets">Minimum Retweets:</label>
+    <input type="number" id="minRetweets" name="minRetweets"><br>
+
+    <label for="sentiment">Sentiment:</label>
+    <select id="sentiment" name="sentiment">
+      <option value="positive">Positive</option>
+      <option value="negative">Negative</option>
+      <option value="both">Both</option>
+    </select><br>
+
+    <button type="submit">Search</button>
+  </form>
+</body>
+</html>
