@@ -39,27 +39,33 @@ fs.readFile(dataPath, 'utf8', (err, data) => {
     try {
         const tweetsData = JSON.parse(data);
 
-        // Map JSON data to the Tweet model schema
-        const tweets = tweetsData.map(tweet => {
-            const tweetSentiment = analyzeSentiment(tweet.content);
-            return new Tweet({
-                username: tweet.user.username,
-                location: tweet.user.location || 'Unknown',
-                content: tweet.content,
-                likes: tweet.likeCount || 0,
-                retweetCount: tweet.retweetCount || 0,
-                sentiment: tweetSentiment,
-            });
-        });
+        // Delete all existing tweets before inserting new data
+        Tweet.deleteMany({})
+            .then(() => {
+                console.log('Existing tweets deleted from MongoDB.');
 
-        // Insert tweets into the database
-        Tweet.insertMany(tweets)
+                // Map JSON data to the Tweet model schema
+                const tweets = tweetsData.map(tweet => {
+                    const tweetSentiment = analyzeSentiment(tweet.content);
+                    return new Tweet({
+                        username: tweet.user.username,
+                        location: tweet.user.location || 'Unknown',
+                        content: tweet.content,
+                        likes: tweet.likeCount || 0,
+                        retweetCount: tweet.retweetCount || 0,
+                        sentiment: tweetSentiment,
+                    });
+                });
+
+                // Insert new tweets into the database
+                return Tweet.insertMany(tweets);
+            })
             .then(() => {
                 console.log('Tweets have been successfully inserted into MongoDB');
                 mongoose.connection.close();
             })
             .catch(err => {
-                console.error('Error inserting tweets into MongoDB:', err);
+                console.error('Error handling data in MongoDB:', err);
                 mongoose.connection.close();
             });
     } catch (jsonError) {
